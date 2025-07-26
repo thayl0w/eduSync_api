@@ -1,0 +1,38 @@
+{
+  "name": "edusync_api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "init-edusync.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sylamarie/eduSync_api.git"
+  },
+  "keywords": [],
+  "author": "Bloodshed Munyaradzi Chiondegwa, Edward John Griffet, Syla Marie Garzon Cumuyog",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/sylamarie/eduSync_api/issues"
+  },
+  "homepage": "https://github.com/sylamarie/eduSync_api#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "express-validator": "^7.2.1",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.16.5",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
