@@ -1,0 +1,432 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "EduSync API",
+    "description": "API for managing a school's student information system. It allows authenticated staff to manage student records, courses, and enrollments.",
+    "version": "1.0.0"
+  },
+  "host": "cse341-final-project-wddi.onrender.com",
+  "basePath": "/",
+  "schemes": [
+    "https"
+  ],
+  "securityDefinitions": {
+    "api_key": {
+      "type": "apiKey",
+      "name": "api_key",
+      "in": "header"
+    }
+  },
+  "paths": {
+    "/students/": {
+      "get": {
+        "tags": [
+          "Students"
+        ],
+        "summary": "Get all students",
+        "description": "Retrieves a list of all students from the database.",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Students"
+        ],
+        "summary": "Create a new student",
+        "description": "Adds a new student to the database. All fields are required.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Student data",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "studentIdNumber": {
+                  "type": "string",
+                  "example": "S123456"
+                },
+                "firstName": {
+                  "type": "string",
+                  "example": "Taurai"
+                },
+                "lastName": {
+                  "type": "string",
+                  "example": "Mutema"
+                },
+                "dateOfBirth": {
+                  "type": "string",
+                  "example": "2005-08-15"
+                },
+                "gradeLevel": {
+                  "type": "number",
+                  "example": 10
+                },
+                "guardianName": {
+                  "type": "string",
+                  "example": "Tarisai Mutema"
+                },
+                "guardianContactPhone": {
+                  "type": "string",
+                  "example": "555-123-4567"
+                },
+                "guardianContactEmail": {
+                  "type": "string",
+                  "example": "tarisai.mutema@zimasset.zw"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/students/{id}": {
+      "get": {
+        "tags": [
+          "Students"
+        ],
+        "summary": "Get a single student by ID",
+        "description": "Retrieves a single student based on their unique MongoDB document ID.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Student document ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Students"
+        ],
+        "summary": "Update an existing student",
+        "description": "Updates the information for an existing student by their document ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Student document ID"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Student data to update",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "studentIdNumber": {
+                  "type": "string",
+                  "example": "S123456"
+                },
+                "firstName": {
+                  "type": "string",
+                  "example": "Taurai"
+                },
+                "lastName": {
+                  "type": "string",
+                  "example": "Mutema"
+                },
+                "dateOfBirth": {
+                  "type": "string",
+                  "example": "2005-08-15"
+                },
+                "gradeLevel": {
+                  "type": "number",
+                  "example": 11
+                },
+                "guardianName": {
+                  "type": "string",
+                  "example": "Tarisai Mutema"
+                },
+                "guardianContactPhone": {
+                  "type": "string",
+                  "example": "555-987-6543"
+                },
+                "guardianContactEmail": {
+                  "type": "string",
+                  "example": "tarisai.mutema@zimasset.zw"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Students"
+        ],
+        "summary": "Delete a student",
+        "description": "Deletes a student from the database by their document ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Student document ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/courses/": {
+      "get": {
+        "tags": [
+          "Courses"
+        ],
+        "summary": "Get all courses",
+        "description": "Retrieves a list of all courses from the database.",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Courses"
+        ],
+        "summary": "Create a new course",
+        "description": "Adds a new course to the database. All fields are required.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Course data",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "courseCode": {
+                  "type": "string",
+                  "example": "CSE341"
+                },
+                "courseName": {
+                  "type": "string",
+                  "example": "Web Backend Development II"
+                },
+                "description": {
+                  "type": "string",
+                  "example": "Advanced topics in server-side web development."
+                },
+                "teacherId": {
+                  "type": "string",
+                  "example": "60d21b4667d0d8992e610c85"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/courses/{id}": {
+      "get": {
+        "tags": [
+          "Courses"
+        ],
+        "summary": "Get a single course by ID",
+        "description": "Retrieves a single course based on its unique MongoDB document ID.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Course document ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Courses"
+        ],
+        "summary": "Update an existing course",
+        "description": "Updates the information for an existing course by its document ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Course document ID"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Course data to update",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "courseCode": {
+                  "type": "string",
+                  "example": "CSE341"
+                },
+                "courseName": {
+                  "type": "string",
+                  "example": "Web Backend Development II - Updated"
+                },
+                "description": {
+                  "type": "string",
+                  "example": "Advanced topics in server-side web development and deployment."
+                },
+                "teacherId": {
+                  "type": "string",
+                  "example": "60d21b4667d0d8992e610c85"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Courses"
+        ],
+        "summary": "Delete a course",
+        "description": "Deletes a course from the database by its document ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Course document ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    }
+  }
+}

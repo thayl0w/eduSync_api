@@ -1,12 +1,21 @@
 const mongodb = require('../data/database');
 const ObjectId = require('mongodb').ObjectId;
 
-// Create a get all of the courses(GET), get a course by ID(GET), create a course(POST), update a course(PUT), and delete a course(DELETE) routes
-// This week5 we just need to create a two collections, which are students and courses
-// I add the get all of the courses(GET) route and add the other routes
+// Validation function for course data
+const validateCourse = (data) => {
+    const requiredFields = ['courseCode', 'courseName', 'description', 'teacherId'];
+    for (const field of requiredFields) {
+        if (!data[field]) {
+            return { valid: false, message: `Field '${field}' is required.` };
+        }
+    }
+    return { valid: true };
+};
 
 const getAllCourses = async (req, res) => {
-    //#Swagger.tags = ['Courses'];
+    // #swagger.tags = ['Courses']
+    // #swagger.summary = 'Get all courses'
+    // #swagger.description = 'Retrieves a list of all courses from the database.'
     try {
         const result = await mongodb.getDatabase().db('edusync_api').collection('courses').find();
         const courses = await result.toArray();
@@ -14,24 +23,161 @@ const getAllCourses = async (req, res) => {
         res.status(200).json(courses);
     } catch (error) {
         console.error('Error fetching courses:', error);
-        res.status(500).json({ error: 'An error occurred while fetching courses.' });
+        res.status(500).json({ error: 'An internal server error occurred while fetching courses.' });
     }
 };
 
-// Add the remaining routes for courses
-// ...
+const getCourseById = async (req, res) => {
+    // #swagger.tags = ['Courses']
+    // #swagger.summary = 'Get a single course by ID'
+    // #swagger.description = 'Retrieves a single course based on its unique MongoDB document ID.'
+    /*  #swagger.parameters['id'] = {
+            in: 'path',
+            description: 'Course document ID',
+            required: true,
+            type: 'string'
+    } */
+    if (!ObjectId.isValid(req.params.id)) {
+        return res.status(400).json({ message: 'Invalid course ID format.' });
+    }
+    const courseId = new ObjectId(req.params.id);
+    try {
+        const result = await mongodb.getDatabase().db('edusync_api').collection('courses').findOne({ _id: courseId });
+        if (result) {
+            res.setHeader('Content-Type', 'application/json');
+            res.status(200).json(result);
+        } else {
+            res.status(404).json({ message: 'Course not found.' });
+        }
+    } catch (error) {
+        console.error('Error fetching course by ID:', error);
+        res.status(500).json({ error: 'An internal server error occurred.' });
+    }
+};
 
+const createCourse = async (req, res) => {
+    // #swagger.tags = ['Courses']
+    // #swagger.summary = 'Create a new course'
+    // #swagger.description = 'Adds a new course to the database. All fields are required.'
+    /*  #swagger.parameters['body'] = {
+            in: 'body',
+            description: 'Course data',
+            required: true,
+            schema: {
+                courseCode: 'CSE341',
+                courseName: 'Web Backend Development II',
+                description: 'Advanced topics in server-side web development.',
+                teacherId: '60d21b4667d0d8992e610c85'
+            }
+    } */
+    const validation = validateCourse(req.body);
+    if (!validation.valid) {
+        return res.status(400).json({ message: validation.message });
+    }
 
+    const course = {
+        courseCode: req.body.courseCode,
+        courseName: req.body.courseName,
+        description: req.body.description,
+        teacherId: req.body.teacherId
+    };
 
+    try {
+        const response = await mongodb.getDatabase().db('edusync_api').collection('courses').insertOne(course);
+        if (response.acknowledged) {
+            res.status(201).json({ message: 'Course created successfully.', courseId: response.insertedId });
+        } else {
+            res.status(500).json({ error: 'An error occurred while creating the course.' });
+        }
+    } catch (error) {
+        console.error('Error creating course:', error);
+        res.status(500).json({ error: 'An internal server error occurred.' });
+    }
+};
 
+const updateCourse = async (req, res) => {
+    // #swagger.tags = ['Courses']
+    // #swagger.summary = 'Update an existing course'
+    // #swagger.description = 'Updates the information for an existing course by its document ID.'
+    /*  #swagger.parameters['id'] = {
+            in: 'path',
+            description: 'Course document ID',
+            required: true,
+            type: 'string'
+    } */
+    /*  #swagger.parameters['body'] = {
+            in: 'body',
+            description: 'Course data to update',
+            required: true,
+            schema: {
+                courseCode: 'CSE341',
+                courseName: 'Web Backend Development II - Updated',
+                description: 'Advanced topics in server-side web development and deployment.',
+                teacherId: '60d21b4667d0d8992e610c85'
+            }
+    } */
+    if (!ObjectId.isValid(req.params.id)) {
+        return res.status(400).json({ message: 'Invalid course ID format.' });
+    }
+    const courseId = new ObjectId(req.params.id);
 
+    const validation = validateCourse(req.body);
+    if (!validation.valid) {
+        return res.status(400).json({ message: validation.message });
+    }
 
+    const updatedCourse = {
+        courseCode: req.body.courseCode,
+        courseName: req.body.courseName,
+        description: req.body.description,
+        teacherId: req.body.teacherId
+    };
 
+    try {
+        const response = await mongodb.getDatabase().db('edusync_api').collection('courses').replaceOne({ _id: courseId }, updatedCourse);
+        if (response.modifiedCount > 0) {
+            res.status(204).send();
+        } else {
+            res.status(404).json({ message: 'Course not found or no changes made.' });
+        }
+    } catch (error) {
+        console.error('Error updating course:', error);
+        res.status(500).json({ error: 'An internal server error occurred.' });
+    }
+};
+
+const deleteCourse = async (req, res) => {
+    // #swagger.tags = ['Courses']
+    // #swagger.summary = 'Delete a course'
+    // #swagger.description = 'Deletes a course from the database by its document ID.'
+    /*  #swagger.parameters['id'] = {
+            in: 'path',
+            description: 'Course document ID',
+            required: true,
+            type: 'string'
+    } */
+    if (!ObjectId.isValid(req.params.id)) {
+        return res.status(400).json({ message: 'Invalid course ID format.' });
+    }
+    const courseId = new ObjectId(req.params.id);
+
+    try {
+        const response = await mongodb.getDatabase().db('edusync_api').collection('courses').deleteOne({ _id: courseId });
+        if (response.deletedCount > 0) {
+            res.status(200).json({ message: 'Course deleted successfully.' });
+        } else {
+            res.status(404).json({ message: 'Course not found.' });
+        }
+    } catch (error) {
+        console.error('Error deleting course:', error);
+        res.status(500).json({ error: 'An internal server error occurred.' });
+    }
+};
 
 module.exports = {
     getAllCourses,
-    // getCourseById,
-    // createCourse,
-    // updateCourse,
-    // deleteCourse
+    getCourseById,
+    createCourse,
+    updateCourse,
+    deleteCourse
 };
