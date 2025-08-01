@@ -8,8 +8,8 @@ router.get('/', (req, res) => {
     <p>Use the following endpoints to access the API:</p>
     <ul>
       <li><a href="/api-docs">API Documentation (Swagger)</a></li>
-      <li><a href="/students">/students</a></li>
-      <li><a href="/courses">/courses</a></li>
+      <li><a href="/students">Students</a></li>
+      <li><a href="/courses">Courses</a></li>
     </ul>
   `);
 });
