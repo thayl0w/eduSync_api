@@ -1,0 +1,109 @@
+### EduSync API - REST Client Tests
+
+### ========================================
+### STUDENTS ENDPOINTS
+### ========================================
+
+# Get all students
+GET http://localhost:3000/students
+Content-Type: application/json
+
+###
+
+# Get a single student by ID
+GET http://localhost:3000/students/68864bed3c73f6fdc2cf8728
+Content-Type: application/json
+
+###
+
+# Create a new student
+POST http://localhost:3000/students
+Content-Type: application/json
+
+{
+    "firstName": "Syla",
+    "lastName": "Cumuyog",
+    "email": "syla@example.com",
+    "birthDate": "2003-04-15T00:00:00.000+00:00",
+    "gender": "Female",
+    "country": "Philippines",
+    "enrolledCourse": "6886484583377811cd8dc385"
+}
+
+###
+
+# Update a student by ID
+PUT http://localhost:3000/students/688e4c4adf18657252871310
+Content-Type: application/json
+
+{
+    "firstName": "Mariosaaa",
+    "lastName": "Cumuyog",
+    "email": "syla.updated@example.com",
+    "birthDate": "2003-04-15T00:00:00.000+00:00",
+    "gender": "Female",
+    "country": "Philippines",
+    "enrolledCourse": "6886484583377811cd8dc385"
+}
+
+###
+
+# Delete a student by ID
+DELETE http://localhost:3000/students/688e4c4adf18657252871310
+Content-Type: application/json
+
+###
+
+### ========================================
+### COURSES ENDPOINTS
+### ========================================
+
+# Get all courses
+GET http://localhost:3000/courses
+Content-Type: application/json
+
+###
+
+# Get a single course by ID
+GET http://localhost:3000/courses/688649383c73f6fdc2cf8723
+Content-Type: application/json
+
+###
+
+# Create a new course
+POST http://localhost:3000/courses
+Content-Type: application/json
+
+{
+    "courseName": "SOFTWARE DEVELOPMENT",
+    "description": "Teaches coding, web/app development, and databases.",
+    "programLength": "2 years",
+    "creditsRequired": 70,
+    "deliveryMode": "Online",
+    "careerPath": ["Software Developer", "Web Developer", "Database Administrator"],
+    "isActive": true
+}
+
+###
+
+# Update a course by ID
+PUT http://localhost:3000/courses/688e4c9ddf18657252871311
+Content-Type: application/json
+
+{
+    "courseName": "SOFTWARE DEVELOPMENT - UPDATED",
+    "description": "Teaches coding, web/app development, and databases with advanced topics.",
+    "programLength": "2 years",
+    "creditsRequired": 60,
+    "deliveryMode": "Online",
+    "careerPath": ["Software Developer", "Web Developer", "Database Administrator", "DevOps Engineer"],
+    "isActive": true
+}
+
+###
+
+# Delete a course by ID
+DELETE http://localhost:3000/courses/688e4c9ddf18657252871311
+Content-Type: application/json
+
+###

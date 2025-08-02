@@ -5,10 +5,10 @@
     "description": "API for managing a school's student information system. It allows authenticated staff to manage student records, courses, and enrollments.",
     "version": "1.0.0"
   },
-  "host": "cse341-final-project-wddi.onrender.com",
+  "host": "localhost:3000",
   "basePath": "/",
   "schemes": [
-    "https"
+    "http"
   ],
   "securityDefinitions": {
     "api_key": {
@@ -52,37 +52,33 @@
             "schema": {
               "type": "object",
               "properties": {
-                "studentIdNumber": {
-                  "type": "string",
-                  "example": "S123456"
-                },
                 "firstName": {
                   "type": "string",
-                  "example": "Taurai"
+                  "example": "John"
                 },
                 "lastName": {
                   "type": "string",
-                  "example": "Mutema"
+                  "example": "Smith"
                 },
-                "dateOfBirth": {
+                "email": {
                   "type": "string",
-                  "example": "2005-08-15"
+                  "example": "john.smith@example.com"
                 },
-                "gradeLevel": {
-                  "type": "number",
-                  "example": 10
-                },
-                "guardianName": {
+                "birthDate": {
                   "type": "string",
-                  "example": "Tarisai Mutema"
+                  "example": "2003-04-15T00:00:00.000+00:00"
                 },
-                "guardianContactPhone": {
+                "gender": {
                   "type": "string",
-                  "example": "555-123-4567"
+                  "example": "Female"
                 },
-                "guardianContactEmail": {
+                "country": {
                   "type": "string",
-                  "example": "tarisai.mutema@zimasset.zw"
+                  "example": "Philippines"
+                },
+                "enrolledCourse": {
+                  "type": "string",
+                  "example": "6886484583377811cd8dc385"
                 }
               }
             }
@@ -157,45 +153,41 @@
             "schema": {
               "type": "object",
               "properties": {
-                "studentIdNumber": {
-                  "type": "string",
-                  "example": "S123456"
-                },
                 "firstName": {
                   "type": "string",
-                  "example": "Taurai"
+                  "example": "John"
                 },
                 "lastName": {
                   "type": "string",
-                  "example": "Mutema"
+                  "example": "Smith"
                 },
-                "dateOfBirth": {
+                "email": {
                   "type": "string",
-                  "example": "2005-08-15"
+                  "example": "john.smith@example.com"
                 },
-                "gradeLevel": {
-                  "type": "number",
-                  "example": 11
-                },
-                "guardianName": {
+                "birthDate": {
                   "type": "string",
-                  "example": "Tarisai Mutema"
+                  "example": "2003-04-15T00:00:00.000+00:00"
                 },
-                "guardianContactPhone": {
+                "gender": {
                   "type": "string",
-                  "example": "555-987-6543"
+                  "example": "Female"
                 },
-                "guardianContactEmail": {
+                "country": {
                   "type": "string",
-                  "example": "tarisai.mutema@zimasset.zw"
+                  "example": "Philippines"
+                },
+                "enrolledCourse": {
+                  "type": "string",
+                  "example": "6886484583377811cd8dc385"
                 }
               }
             }
           }
         ],
         "responses": {
-          "204": {
-            "description": "No Content"
+          "200": {
+            "description": "OK"
           },
           "400": {
             "description": "Bad Request"
@@ -273,21 +265,40 @@
             "schema": {
               "type": "object",
               "properties": {
-                "courseCode": {
-                  "type": "string",
-                  "example": "CSE341"
-                },
                 "courseName": {
                   "type": "string",
-                  "example": "Web Backend Development II"
+                  "example": "SOFTWARE DEVELOPMENT"
                 },
                 "description": {
                   "type": "string",
-                  "example": "Advanced topics in server-side web development."
+                  "example": "Teaches coding, web/app development, and databases."
                 },
-                "teacherId": {
+                "programLength": {
                   "type": "string",
-                  "example": "60d21b4667d0d8992e610c85"
+                  "example": "2 years"
+                },
+                "creditsRequired": {
+                  "type": "number",
+                  "example": 60
+                },
+                "deliveryMode": {
+                  "type": "string",
+                  "example": "Online"
+                },
+                "careerPath": {
+                  "type": "array",
+                  "example": [
+                    "Software Developer",
+                    "Web Developer",
+                    "Database Administrator"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "isActive": {
+                  "type": "boolean",
+                  "example": true
                 }
               }
             }
@@ -362,29 +373,49 @@
             "schema": {
               "type": "object",
               "properties": {
-                "courseCode": {
-                  "type": "string",
-                  "example": "CSE341"
-                },
                 "courseName": {
                   "type": "string",
-                  "example": "Web Backend Development II - Updated"
+                  "example": "SOFTWARE DEVELOPMENT"
                 },
                 "description": {
                   "type": "string",
-                  "example": "Advanced topics in server-side web development and deployment."
+                  "example": "Teaches coding, web/app development, and databases with advanced topics."
                 },
-                "teacherId": {
+                "programLength": {
                   "type": "string",
-                  "example": "60d21b4667d0d8992e610c85"
+                  "example": "2 years"
+                },
+                "creditsRequired": {
+                  "type": "number",
+                  "example": 60
+                },
+                "deliveryMode": {
+                  "type": "string",
+                  "example": "Online"
+                },
+                "careerPath": {
+                  "type": "array",
+                  "example": [
+                    "Software Developer",
+                    "Web Developer",
+                    "Database Administrator",
+                    "DevOps Engineer"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "isActive": {
+                  "type": "boolean",
+                  "example": true
                 }
               }
             }
           }
         ],
         "responses": {
-          "204": {
-            "description": "No Content"
+          "200": {
+            "description": "OK"
           },
           "400": {
             "description": "Bad Request"

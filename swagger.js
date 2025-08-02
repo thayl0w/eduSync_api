@@ -3,10 +3,11 @@ const swaggerAutogen = require('swagger-autogen')();
 const doc = {
   info: {
     title: 'EduSync API',
-    description: "API for managing a school's student information system. It allows authenticated staff to manage student records, courses, and enrollments."
+    description: "API for managing a school's student information system. It allows authenticated staff to manage student records, courses, and enrollments.",
+    version: '1.0.0'
   },
-  host: 'cse341-final-project-wddi.onrender.com', // Replace with your Render host
-  schemes: ['https'],
+  host: 'localhost:3000',
+  schemes: ['http'],
   securityDefinitions: {
     api_key: {
         type: 'apiKey',
