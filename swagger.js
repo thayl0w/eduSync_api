@@ -3,7 +3,7 @@ const swaggerAutogen = require('swagger-autogen')();
 // Determine the host based on environment
 const isProduction = process.env.NODE_ENV === 'production';
 const host = isProduction 
-  ? process.env.RENDER_EXTERNAL_HOSTNAME || 'your-render-app-name.onrender.com'
+  ? process.env.RENDER_EXTERNAL_HOSTNAME || 'https://edusync-api-7p52.onrender.com'
   : 'localhost:3000';
 
 const doc = {
