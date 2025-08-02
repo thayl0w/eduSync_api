@@ -1,13 +1,19 @@
 const swaggerAutogen = require('swagger-autogen')();
 
+// Determine the host based on environment
+const isProduction = process.env.NODE_ENV === 'production';
+const host = isProduction 
+  ? process.env.RENDER_EXTERNAL_HOSTNAME || 'your-render-app-name.onrender.com'
+  : 'localhost:3000';
+
 const doc = {
   info: {
     title: 'EduSync API',
     description: "API for managing a school's student information system. It allows authenticated staff to manage student records, courses, and enrollments.",
     version: '1.0.0'
   },
-  host: 'localhost:3000',
-  schemes: ['http'],
+  host: host,
+  schemes: isProduction ? ['https'] : ['http'],
   securityDefinitions: {
     api_key: {
         type: 'apiKey',
