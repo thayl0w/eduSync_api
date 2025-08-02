@@ -5,10 +5,9 @@
     "description": "API for managing a school's student information system. It allows authenticated staff to manage student records, courses, and enrollments.",
     "version": "1.0.0"
   },
-  "host": "edusync-api-7p52.onrender.com",
+  "host": "placeholder",
   "basePath": "/",
   "schemes": [
-    "http",
     "https"
   ],
   "securityDefinitions": {
@@ -48,38 +47,29 @@
           {
             "name": "body",
             "in": "body",
-            "description": "Student data",
-            "required": true,
             "schema": {
               "type": "object",
               "properties": {
                 "firstName": {
-                  "type": "string",
-                  "example": "John"
+                  "example": "any"
                 },
                 "lastName": {
-                  "type": "string",
-                  "example": "Smith"
+                  "example": "any"
                 },
                 "email": {
-                  "type": "string",
-                  "example": "john.smith@example.com"
+                  "example": "any"
                 },
                 "birthDate": {
-                  "type": "string",
-                  "example": "2003-04-15T00:00:00.000+00:00"
+                  "example": "any"
                 },
                 "gender": {
-                  "type": "string",
-                  "example": "Female"
+                  "example": "any"
                 },
                 "country": {
-                  "type": "string",
-                  "example": "Philippines"
+                  "example": "any"
                 },
                 "enrolledCourse": {
-                  "type": "string",
-                  "example": "6886484583377811cd8dc385"
+                  "example": "any"
                 }
               }
             }
@@ -113,8 +103,7 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string",
-            "description": "Student document ID"
+            "type": "string"
           }
         ],
         "responses": {
@@ -143,44 +132,34 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string",
-            "description": "Student document ID"
+            "type": "string"
           },
           {
             "name": "body",
             "in": "body",
-            "description": "Student data to update",
-            "required": true,
             "schema": {
               "type": "object",
               "properties": {
                 "firstName": {
-                  "type": "string",
-                  "example": "John"
+                  "example": "any"
                 },
                 "lastName": {
-                  "type": "string",
-                  "example": "Smith"
+                  "example": "any"
                 },
                 "email": {
-                  "type": "string",
-                  "example": "john.smith@example.com"
+                  "example": "any"
                 },
                 "birthDate": {
-                  "type": "string",
-                  "example": "2003-04-15T00:00:00.000+00:00"
+                  "example": "any"
                 },
                 "gender": {
-                  "type": "string",
-                  "example": "Female"
+                  "example": "any"
                 },
                 "country": {
-                  "type": "string",
-                  "example": "Philippines"
+                  "example": "any"
                 },
                 "enrolledCourse": {
-                  "type": "string",
-                  "example": "6886484583377811cd8dc385"
+                  "example": "any"
                 }
               }
             }
@@ -212,8 +191,7 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string",
-            "description": "Student document ID"
+            "type": "string"
           }
         ],
         "responses": {
@@ -261,45 +239,29 @@
           {
             "name": "body",
             "in": "body",
-            "description": "Course data",
-            "required": true,
             "schema": {
               "type": "object",
               "properties": {
                 "courseName": {
-                  "type": "string",
-                  "example": "SOFTWARE DEVELOPMENT"
+                  "example": "any"
                 },
                 "description": {
-                  "type": "string",
-                  "example": "Teaches coding, web/app development, and databases."
+                  "example": "any"
                 },
                 "programLength": {
-                  "type": "string",
-                  "example": "2 years"
+                  "example": "any"
                 },
                 "creditsRequired": {
-                  "type": "number",
-                  "example": 60
+                  "example": "any"
                 },
                 "deliveryMode": {
-                  "type": "string",
-                  "example": "Online"
+                  "example": "any"
                 },
                 "careerPath": {
-                  "type": "array",
-                  "example": [
-                    "Software Developer",
-                    "Web Developer",
-                    "Database Administrator"
-                  ],
-                  "items": {
-                    "type": "string"
-                  }
+                  "example": "any"
                 },
                 "isActive": {
-                  "type": "boolean",
-                  "example": true
+                  "example": "any"
                 }
               }
             }
@@ -333,8 +295,7 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string",
-            "description": "Course document ID"
+            "type": "string"
           }
         ],
         "responses": {
@@ -363,52 +324,34 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string",
-            "description": "Course document ID"
+            "type": "string"
           },
           {
             "name": "body",
             "in": "body",
-            "description": "Course data to update",
-            "required": true,
             "schema": {
               "type": "object",
               "properties": {
                 "courseName": {
-                  "type": "string",
-                  "example": "SOFTWARE DEVELOPMENT"
+                  "example": "any"
                 },
                 "description": {
-                  "type": "string",
-                  "example": "Teaches coding, web/app development, and databases with advanced topics."
+                  "example": "any"
                 },
                 "programLength": {
-                  "type": "string",
-                  "example": "2 years"
+                  "example": "any"
                 },
                 "creditsRequired": {
-                  "type": "number",
-                  "example": 60
+                  "example": "any"
                 },
                 "deliveryMode": {
-                  "type": "string",
-                  "example": "Online"
+                  "example": "any"
                 },
                 "careerPath": {
-                  "type": "array",
-                  "example": [
-                    "Software Developer",
-                    "Web Developer",
-                    "Database Administrator",
-                    "DevOps Engineer"
-                  ],
-                  "items": {
-                    "type": "string"
-                  }
+                  "example": "any"
                 },
                 "isActive": {
-                  "type": "boolean",
-                  "example": true
+                  "example": "any"
                 }
               }
             }
@@ -440,8 +383,7 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string",
-            "description": "Course document ID"
+            "type": "string"
           }
         ],
         "responses": {
