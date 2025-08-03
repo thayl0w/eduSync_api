@@ -5,7 +5,7 @@ const ObjectId = require('mongodb').ObjectId;
 const validateCourse = (data) => {
     const requiredFields = ['courseName', 'description', 'programLength', 'creditsRequired', 'deliveryMode', 'careerPath', 'isActive'];
     for (const field of requiredFields) {
-        if (!data[field]) {
+        if (!data[field] && data[field] !== false) {
             return { valid: false, message: `Field '${field}' is required.` };
         }
     }
