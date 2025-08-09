@@ -9,8 +9,12 @@ const { validateRegistration, validateLogin } = require('../middleware/validate'
 const { isAuthenticated } = require('../middleware/authenticated');
 
 router.get('/', (req, res) => {
-  const loginStatus = req.session.user
-    ? `<p>Logged in as ${req.session.user.username}</p>`
+  const displayName = req.session.user
+    ? (req.session.user.username || req.session.user.displayName || (req.session.user._json && req.session.user._json.login) || 'GitHub User')
+    : null;
+
+  const loginStatus = displayName
+    ? `<p>Logged in as ${displayName}</p>`
     : `<p>Logged Out</p>`;
 
   res.send(`
@@ -22,7 +26,7 @@ router.get('/', (req, res) => {
       <li><a href="/students">Students</a></li>
       <li><a href="/courses">Courses</a></li>
       <li><a href="/enrollments">Enrollments</a></li>
-      <li><a href="/github">Login to GitHub</a></li>
+      <li>${req.session.user ? '<a href="/logout">Logout</a>' : '<a href="/github">Login to GitHub</a>'}</li>
     </ul>
   `);
 });

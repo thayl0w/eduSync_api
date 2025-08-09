@@ -1,5 +1,14 @@
 const dotenv = require('dotenv');
-dotenv.config();
+// Ensure dotenv config is loaded once and quietly
+(() => {
+  const originalConsoleLog = console.log;
+  try {
+    console.log = () => {};
+    dotenv.config();
+  } finally {
+    console.log = originalConsoleLog;
+  }
+})();
 
 const MongoClient = require('mongodb').MongoClient;
 

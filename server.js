@@ -1,4 +1,15 @@
 const express = require('express');
+const dotenv = require('dotenv');
+// Silence dotenv console output during config
+(() => {
+  const originalConsoleLog = console.log;
+  try {
+    console.log = () => {};
+    dotenv.config();
+  } finally {
+    console.log = originalConsoleLog;
+  }
+})();
 const bodyParser = require('body-parser');
 const mongodb = require('./data/database');
 const app = express();
@@ -10,6 +21,7 @@ const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
 
 const port = process.env.PORT || 3000;
+const githubCallbackURL = process.env.CALLBACK_URL || `http://localhost:${port}/github/callback`;
 
 // ✅ Trust proxy to detect https on Render
 app.set('trust proxy', true);
@@ -43,14 +55,16 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 // 🔹 Routes
 app.use("/", require('./routes/index.js'));
 
-passport.use(new GithubStrategy({
-  clientID: process.env.GITHUB_CLIENT_ID,
-  clientSecret: process.env.GITHUB_CLIENT_SECRET,
-  callbackURL: process.env.CALLBACK_URL
-},
-function(accessToken, refreshToken, profile, done) {
-  return done(null, profile);
-}));
+passport.use(new GithubStrategy(
+  {
+    clientID: process.env.GITHUB_CLIENT_ID,
+    clientSecret: process.env.GITHUB_CLIENT_SECRET,
+    callbackURL: githubCallbackURL,
+  },
+  function (accessToken, refreshToken, profile, done) {
+    return done(null, profile);
+  }
+));
 
 passport.serializeUser((user, done) => {
   done(null, user);
@@ -59,19 +73,28 @@ passport.deserializeUser((user, done) => {
   done(null, user);   
 });
 
-// app.get('/', (req, res) => { 
-//   res.send(req.session.user !== undefined 
-//     ? `Logged in as ${req.session.user.username}` 
-//     : "Logged Out");
-// });
+// Start GitHub OAuth flow
+app.get('/github', passport.authenticate('github', { scope: ['user:email'] }));
 
-app.get('/github/callback', passport.authenticate('github', {
-  failureRedirect: '/api-docs', session: false}),
+app.get(
+  '/github/callback',
+  passport.authenticate('github', { failureRedirect: '/', session: false }),
   (req, res) => {
     req.session.user = req.user;
     res.redirect('/');
   }
 );
+
+// Simple GET logout route for browsers
+app.get('/logout', (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      return res.status(500).json({ error: 'Error logging out.' });
+    }
+    res.clearCookie('connect.sid');
+    res.redirect('/');
+  });
+});
 
 // 🔹 MongoDB init and server listen
 mongodb.initDb((err) => {
@@ -79,8 +102,7 @@ mongodb.initDb((err) => {
     console.log(err);
   } else {
     app.listen(port, () => {
-      console.log(`Database is listening and EduSync API is running on port ${port}`);
-      console.log(`Swagger Docs available at http://localhost:${port}/api-docs`);
+      console.log(`EduSync API server listening at http://localhost:${port}`);
     });
   }
 });
