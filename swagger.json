@@ -5,9 +5,10 @@
     "description": "API for managing a school's student information system. It allows authenticated staff to manage student records, courses, and enrollments.",
     "version": "1.0.0"
   },
-  "host": "localhost:3000",
+  "host": "placeholder",
   "basePath": "/",
   "schemes": [
+    "https",
     "http"
   ],
   "securityDefinitions": {
@@ -427,6 +428,11 @@
         ],
         "summary": "Create a new enrollment",
         "description": "Adds a new enrollment to the database, linking a student to a course.",
+        "security": [
+          {
+            "api_key": []
+          }
+        ],
         "parameters": [
           {
             "name": "body",
@@ -435,16 +441,25 @@
               "type": "object",
               "properties": {
                 "studentId": {
-                  "example": "any"
+                  "example": "68864bed3c73f6fdc2cf8728"
                 },
                 "courseId": {
-                  "example": "any"
+                  "example": "6886484583377811cd8dc385"
                 },
                 "enrollmentDate": {
-                  "example": "any"
+                  "example": "2025-08-15T00:00:00.000Z"
                 },
                 "status": {
-                  "example": "any"
+                  "example": "Enrolled"
+                },
+                "finalGrade": {
+                  "example": "In Progress"
+                },
+                "semester": {
+                  "example": "Fall 2025"
+                },
+                "creditsEarned": {
+                  "example": 0
                 }
               }
             }
@@ -502,6 +517,11 @@
         ],
         "summary": "Update an existing enrollment",
         "description": "Updates the information for an existing enrollment by its document ID.",
+        "security": [
+          {
+            "api_key": []
+          }
+        ],
         "parameters": [
           {
             "name": "id",
@@ -516,16 +536,25 @@
               "type": "object",
               "properties": {
                 "studentId": {
-                  "example": "any"
+                  "example": "68864bed3c73f6fdc2cf8728"
                 },
                 "courseId": {
-                  "example": "any"
+                  "example": "6886484583377811cd8dc385"
                 },
                 "enrollmentDate": {
-                  "example": "any"
+                  "example": "2025-08-15T00:00:00.000Z"
                 },
                 "status": {
-                  "example": "any"
+                  "example": "Completed"
+                },
+                "finalGrade": {
+                  "example": "A"
+                },
+                "semester": {
+                  "example": "Fall 2025"
+                },
+                "creditsEarned": {
+                  "example": 3
                 }
               }
             }
@@ -552,6 +581,11 @@
         ],
         "summary": "Delete an enrollment",
         "description": "Deletes an enrollment from the database by its document ID.",
+        "security": [
+          {
+            "api_key": []
+          }
+        ],
         "parameters": [
           {
             "name": "id",
