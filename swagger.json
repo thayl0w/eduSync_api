@@ -18,6 +18,16 @@
     }
   },
   "paths": {
+    "/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/register": {
       "post": {
         "tags": [
@@ -570,6 +580,15 @@
                 },
                 "status": {
                   "example": "any"
+                },
+                "finalGrade": {
+                  "example": "any"
+                },
+                "semester": {
+                  "example": "any"
+                },
+                "creditsEarned": {
+                  "example": "any"
                 }
               }
             }
@@ -654,6 +673,15 @@
                 },
                 "status": {
                   "example": "any"
+                },
+                "finalGrade": {
+                  "example": "any"
+                },
+                "semester": {
+                  "example": "any"
+                },
+                "creditsEarned": {
+                  "example": "any"
                 }
               }
             }
@@ -700,213 +728,6 @@
           },
           "401": {
             "description": "Unauthorized"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/enrollments/": {
-      "get": {
-        "tags": [
-          "Enrollments"
-        ],
-        "summary": "Get all enrollments",
-        "description": "Retrieves a list of all student enrollments from the database.",
-        "produces": [
-          "application/json"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "Enrollments"
-        ],
-        "summary": "Create a new enrollment",
-        "description": "Adds a new enrollment to the database, linking a student to a course.",
-        "security": [
-          {
-            "api_key": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "studentId": {
-                  "example": "68864bed3c73f6fdc2cf8728"
-                },
-                "courseId": {
-                  "example": "6886484583377811cd8dc385"
-                },
-                "enrollmentDate": {
-                  "example": "2025-08-15T00:00:00.000Z"
-                },
-                "status": {
-                  "example": "Enrolled"
-                },
-                "finalGrade": {
-                  "example": "In Progress"
-                },
-                "semester": {
-                  "example": "Fall 2025"
-                },
-                "creditsEarned": {
-                  "example": 0
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Created"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/enrollments/{id}": {
-      "get": {
-        "tags": [
-          "Enrollments"
-        ],
-        "summary": "Get a single enrollment by ID",
-        "description": "Retrieves a single enrollment based on its unique MongoDB document ID.",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "Enrollments"
-        ],
-        "summary": "Update an existing enrollment",
-        "description": "Updates the information for an existing enrollment by its document ID.",
-        "security": [
-          {
-            "api_key": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "studentId": {
-                  "example": "68864bed3c73f6fdc2cf8728"
-                },
-                "courseId": {
-                  "example": "6886484583377811cd8dc385"
-                },
-                "enrollmentDate": {
-                  "example": "2025-08-15T00:00:00.000Z"
-                },
-                "status": {
-                  "example": "Completed"
-                },
-                "finalGrade": {
-                  "example": "A"
-                },
-                "semester": {
-                  "example": "Fall 2025"
-                },
-                "creditsEarned": {
-                  "example": 3
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "Enrollments"
-        ],
-        "summary": "Delete an enrollment",
-        "description": "Deletes an enrollment from the database by its document ID.",
-        "security": [
-          {
-            "api_key": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
           },
           "404": {
             "description": "Not Found"
