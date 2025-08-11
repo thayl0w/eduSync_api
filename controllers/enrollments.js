@@ -4,6 +4,7 @@ const ObjectId = require('mongodb').ObjectId;
 // Validation function for enrollment data (updated to 7 fields)
 const validateEnrollment = (data) => {
     const requiredFields = ['studentId', 'courseId', 'enrollmentDate', 'status', 'finalGrade', 'semester', 'creditsEarned'];
+
     for (const field of requiredFields) {
         if (!data[field] && data[field] !== 0) { // Allow 0 for creditsEarned
             return { valid: false, message: `Field '${field}' is required.` };
@@ -15,8 +16,10 @@ const validateEnrollment = (data) => {
     if (!ObjectId.isValid(data.courseId)) {
         return { valid: false, message: 'Invalid courseId format.' };
     }
-    if (typeof data.creditsEarned !== 'number') {
-        return { valid: false, message: 'Field \'creditsEarned\' must be a number.' };
+    if (isNaN(Number(data.creditsEarned))) {
+    return { valid: false, message: "Field 'creditsEarned' must be a number." };
+    } else {
+    data.creditsEarned = Number(data.creditsEarned);
     }
     return { valid: true };
 };
