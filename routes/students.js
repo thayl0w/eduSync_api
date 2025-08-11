@@ -1,8 +1,10 @@
-const express = require('express');
-const router = express.Router();
+// const express = require('express');
+// const router = express.Router();
+
+const router = require('express').Router();
 
 const studentsController = require('../controllers/students');
-// const { isAuthenticated } = require('../middleware/authenticated'); // For future implementation
+const { isAuthenticated } = require('../middleware/authenticated');
 
 // GET all students
 router.get('/', studentsController.getAllStudents);
@@ -11,13 +13,13 @@ router.get('/', studentsController.getAllStudents);
 router.get('/:id', studentsController.getStudentById);
 
 // POST a new student
-router.post('/', studentsController.createStudent);
+router.post('/', isAuthenticated, studentsController.createStudent);
 
 // PUT (update) a student by ID
-router.put('/:id', studentsController.updateStudent);
+router.put('/:id', isAuthenticated, studentsController.updateStudent);
 
 // DELETE a student by ID
-router.delete('/:id', studentsController.deleteStudent);
+router.delete('/:id', isAuthenticated, studentsController.deleteStudent);
 
 module.exports = router;
 // This file sets up the routes for the students collection, allowing for CRUD operations

@@ -4,7 +4,7 @@ const swaggerAutogen = require('swagger-autogen')();
 const isProduction = process.env.NODE_ENV === 'production';
 const host = isProduction 
   ? process.env.RENDER_EXTERNAL_HOSTNAME || 'edusync-api-7p52.onrender.com'
-  : 'localhost:3000';
+  : `localhost:${process.env.PORT || 3000}`;
 
 const doc = {
   info: {

@@ -34,9 +34,19 @@ A RESTful API for managing a school's student information system. Built with Nod
    ```
 
 2. **Set up environment variables:**
-   Create a `.env` file with your MongoDB connection string:
+   Create a `.env` file (you can copy `.env.example`) and set the values:
    ```
-   MONGODB_URI=your_mongodb_connection_string
+   # Required
+   MONGODB_URL=your_mongodb_connection_string
+   
+   # GitHub OAuth (required for GitHub login)
+   GITHUB_CLIENT_ID=your_github_oauth_app_client_id
+   GITHUB_CLIENT_SECRET=your_github_oauth_app_client_secret
+   # Optional in local dev; defaults to http://localhost:3000/github/callback
+   CALLBACK_URL=http://localhost:3000/github/callback
+   
+   # Optional
+   PORT=3000
    ```
 
 3. **Generate Swagger documentation:**
@@ -46,12 +56,16 @@ A RESTful API for managing a school's student information system. Built with Nod
 
 4. **Start the server:**
    ```bash
+   node server.js
+   # or
    npm start
    ```
 
 5. **Access the API:**
    - API: `http://localhost:3000`
    - Swagger Docs: `http://localhost:3000/api-docs`
+   - GitHub Login: `http://localhost:3000/github`
+   - Logout: `http://localhost:3000/logout`
 
 ## Render Deployment
 
