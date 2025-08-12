@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "title": "EduSync API",
-    "description": "API for managing a school's student information system. It allows authenticated staff to manage student records, courses, enrollments, and related data.",
+    "description": "API for managing a school's student information system. It allows authenticated staff to manage student records, courses, and enrollments.",
     "version": "1.0.0"
   },
   "host": "edusync-api-7p52.onrender.com",
@@ -11,11 +11,21 @@
     "https"
   ],
   "securityDefinitions": {
+    "api_key": {
+      "type": "apiKey",
+      "name": "api_key",
+      "in": "header"
+    },
     "github_oauth": {
       "type": "oauth2",
       "flow": "implicit",
       "authorizationUrl": "https://edusync-api-7p52.onrender.com/auth/github",
-      "scopes": {}
+      "scopes": {
+        "read:students": "Read student information",
+        "write:students": "Create and update student information",
+        "read:courses": "Read course information",
+        "write:courses": "Create and update courses"
+      }
     }
   },
   "paths": {
@@ -744,6 +754,10 @@
     "Student": {
       "type": "object",
       "properties": {
+        "_id": {
+          "type": "string",
+          "example": "66a16d8a7f1f3a8e1b9b3b4a"
+        },
         "firstName": {
           "type": "string",
           "example": "John"
@@ -754,61 +768,81 @@
         },
         "dateOfBirth": {
           "type": "string",
-          "example": "2000-01-01"
+          "example": "2005-04-23"
         },
-        "gender": {
+        "studentId": {
           "type": "string",
-          "example": "Male"
+          "example": "STU12345"
         },
-        "address": {
+        "grade": {
           "type": "string",
-          "example": "123 Main St"
+          "example": "Form 3"
         },
         "email": {
           "type": "string",
-          "example": "john.doe@example.com"
+          "example": "johndoe@example.com"
         },
-        "phone": {
+        "address": {
           "type": "string",
-          "example": "123-456-7890"
+          "example": "123 Main St, Harare"
+        },
+        "guardianName": {
+          "type": "string",
+          "example": "Jane Doe"
+        },
+        "guardianContact": {
+          "type": "string",
+          "example": "+263712345678"
         }
       }
     },
     "Course": {
       "type": "object",
       "properties": {
-        "name": {
+        "_id": {
           "type": "string",
-          "example": "Mathematics 101"
+          "example": "66a16eaa7f1f3a8e1b9b3b4b"
         },
-        "code": {
+        "courseCode": {
           "type": "string",
           "example": "MATH101"
         },
+        "courseName": {
+          "type": "string",
+          "example": "Mathematics"
+        },
         "description": {
           "type": "string",
-          "example": "An introductory course to Mathematics"
+          "example": "An introductory course to algebra and geometry"
         },
         "credits": {
           "type": "number",
           "example": 3
+        },
+        "teacher": {
+          "type": "string",
+          "example": "Mr. Smith"
         }
       }
     },
     "Enrollment": {
       "type": "object",
       "properties": {
+        "_id": {
+          "type": "string",
+          "example": "66a16fbc7f1f3a8e1b9b3b4c"
+        },
         "studentId": {
           "type": "string",
           "example": "66a16d8a7f1f3a8e1b9b3b4a"
         },
         "courseId": {
           "type": "string",
-          "example": "66a16d8a7f1f3a8e1b9b3b4b"
+          "example": "66a16eaa7f1f3a8e1b9b3b4b"
         },
         "enrollmentDate": {
           "type": "string",
-          "example": "2025-01-10"
+          "example": "2025-01-15"
         },
         "status": {
           "type": "string",
@@ -820,7 +854,7 @@
         },
         "semester": {
           "type": "string",
-          "example": "Fall 2025"
+          "example": "Semester 1"
         },
         "creditsEarned": {
           "type": "number",
@@ -841,58 +875,68 @@
         },
         "dateOfBirth": {
           "type": "string",
-          "example": "2000-01-01"
+          "example": "2005-04-23"
         },
-        "gender": {
+        "studentId": {
           "type": "string",
-          "example": "Male"
+          "example": "STU12345"
         },
-        "address": {
+        "grade": {
           "type": "string",
-          "example": "123 Main St"
+          "example": "Form 3"
         },
         "email": {
           "type": "string",
-          "example": "john.doe@example.com"
+          "example": "johndoe@example.com"
         },
-        "phone": {
+        "address": {
           "type": "string",
-          "example": "123-456-7890"
+          "example": "123 Main St, Harare"
+        },
+        "guardianName": {
+          "type": "string",
+          "example": "Jane Doe"
+        },
+        "guardianContact": {
+          "type": "string",
+          "example": "+263712345678"
         }
       },
       "required": [
         "firstName",
         "lastName",
         "dateOfBirth",
-        "gender",
-        "address",
-        "email",
-        "phone"
+        "studentId",
+        "grade"
       ]
     },
     "CourseInput": {
       "type": "object",
       "properties": {
-        "name": {
-          "type": "string",
-          "example": "Mathematics 101"
-        },
-        "code": {
+        "courseCode": {
           "type": "string",
           "example": "MATH101"
         },
+        "courseName": {
+          "type": "string",
+          "example": "Mathematics"
+        },
         "description": {
           "type": "string",
-          "example": "An introductory course to Mathematics"
+          "example": "An introductory course to algebra and geometry"
         },
         "credits": {
           "type": "number",
           "example": 3
+        },
+        "teacher": {
+          "type": "string",
+          "example": "Mr. Smith"
         }
       },
       "required": [
-        "name",
-        "code",
+        "courseCode",
+        "courseName",
         "credits"
       ]
     },
@@ -905,11 +949,11 @@
         },
         "courseId": {
           "type": "string",
-          "example": "66a16d8a7f1f3a8e1b9b3b4b"
+          "example": "66a16eaa7f1f3a8e1b9b3b4b"
         },
         "enrollmentDate": {
           "type": "string",
-          "example": "2025-01-10"
+          "example": "2025-01-15"
         },
         "status": {
           "type": "string",
@@ -921,7 +965,7 @@
         },
         "semester": {
           "type": "string",
-          "example": "Fall 2025"
+          "example": "Semester 1"
         },
         "creditsEarned": {
           "type": "number",
@@ -932,9 +976,7 @@
         "studentId",
         "courseId",
         "enrollmentDate",
-        "status",
-        "semester",
-        "creditsEarned"
+        "status"
       ]
     }
   }
