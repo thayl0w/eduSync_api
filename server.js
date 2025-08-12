@@ -1,15 +1,4 @@
 const express = require('express');
-const dotenv = require('dotenv');
-// Silence dotenv console output during config
-(() => {
-  const originalConsoleLog = console.log;
-  try {
-    console.log = () => {};
-    dotenv.config();
-  } finally {
-    console.log = originalConsoleLog;
-  }
-})();
 const bodyParser = require('body-parser');
 const mongodb = require('./data/database');
 const app = express();
@@ -17,105 +6,91 @@ const passport = require('passport');
 const session = require('express-session');
 const GithubStrategy = require('passport-github2').Strategy;
 const cors = require('cors');
-const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('./swagger.json');
 
 const port = process.env.PORT || 3000;
-const githubCallbackURL = process.env.CALLBACK_URL || `http://localhost:${port}/github/callback`;
 
-// ✅ Trust proxy for secure cookies in production
-app.set('trust proxy', 1);
+app
+  .use(bodyParser.json())
+  .use(session({
+    secret: "secret",
+    resave: false,
+    saveUninitialized: true,
+  
+  }))
+  // This is the basuc express session({..}) initialization.
+  .use(passport.initialize())
+  // init passport on every route call.
+  .use(passport.session())
+  // allow passport to use "express-session".
+  .use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader(
+      'Access-Control-Allow-Headers', 
+      'Origin, X-Requested-With, Content-Type, Accept, Z-Key, Authorization'
+    );
+    res.setHeader(
+      'Access-Control-Allow-Methods', 
+      'POST, GET, PUT, PATCH, OPTIONS, DELETE'
+    );
+    next();
+  })
+  .use(cors({ methods: ['GET', 'POST', 'DELETE', 'UPDATE', 'PUT', 'PATCH'], origin: '*' }))
+  .use("/", require('./routes/index.js'));
 
-// ✅ Allow Swagger UI to send cookies
-app.use(cors({
-  origin: `http://localhost:${port}`, // Change to Swagger UI origin
-  credentials: true,
-  methods: ['GET', 'POST', 'DELETE', 'UPDATE', 'PUT', 'PATCH']
+
+passport.use(new GithubStrategy({
+  clientID: process.env.GITHUB_CLIENT_ID,
+  clientSecret: process.env.GITHUB_CLIENT_SECRET,
+  callbackURL: process.env.CALLBACK_URL
+},
+function(accessToken, refreshToken, profile, done) {
+  // Here you can save the user profile to your database if needed
+  // For now, we will just return the profile
+  return done(null, profile);
 }));
-
-// ✅ Body parsing
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
-// ✅ Session configuration (cookies!)
-app.use(session({
-  secret: process.env.SESSION_SECRET || "secret",
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    httpOnly: true,
-    secure: false, // true if using HTTPS
-    sameSite: 'lax' // use 'none' if Swagger UI runs on a different domain with HTTPS
-  }
-}));
-
-// ✅ Passport
-app.use(passport.initialize());
-app.use(passport.session());
-
-// 🔹 Swagger UI with cookie sending enabled
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, {
-  swaggerOptions: {
-    requestInterceptor: (req) => {
-      req.credentials = 'include'; // send session cookies
-      return req;
-    }
-  }
-}));
-
-// 🔹 Routes
-app.use("/", require('./routes/index.js'));
-
-passport.use(new GithubStrategy(
-  {
-    clientID: process.env.GITHUB_CLIENT_ID,
-    clientSecret: process.env.GITHUB_CLIENT_SECRET,
-    callbackURL: githubCallbackURL,
-  },
-  function (accessToken, refreshToken, profile, done) {
-    return done(null, profile);
-  }
-));
 
 passport.serializeUser((user, done) => {
   done(null, user);
 });
 passport.deserializeUser((user, done) => {
-  done(null, user);
+  done(null, user);   
 });
 
-// Start GitHub OAuth flow
-app.get('/github', passport.authenticate('github', { scope: ['user:email'] }));
+app.get('/', (req, res) => { res.send(req.session.user !== undefined ? 'Logged in as ${req.session.user.username}' : "Logged Out")});
 
-app.get(
-  '/github/callback',
-  passport.authenticate('github', { failureRedirect: '/', session: true }), // ✅ keep session
+app.get('/github/callback', passport.authenticate('github', {
+  failureRedirect: '/api-docs', session: false}),
   (req, res) => {
+    // Successful authentication, redirect home.
     req.session.user = req.user;
-    res.redirect('/api-docs'); // redirect to Swagger UI
-  }
-);
+    res.redirect('/');
+  });
 
-// Simple GET logout route for browsers
-app.get('/logout', (req, res) => {
-  req.logout(() => {
-    req.session.destroy((err) => {
-      if (err) {
-        return res.status(500).json({ error: 'Error logging out.' });
-      }
-      res.clearCookie('connect.sid');
-      res.redirect('/');
-    });
+
+
+// Add Swagger documentation route
+app.use('/api-docs', require('./routes/swagger'));
+
+// 404 handler for undefined routes
+app.use((req, res) => {
+  res.status(404).json({ error: 'Route not found' });
+});
+
+// Global error handling middleware
+app.use((err, req, res, next) => {
+  console.error('Global error handler:', err);
+  res.status(500).json({ 
+    error: 'Internal server error',
+    message: process.env.NODE_ENV === 'development' ? err.message : 'Something went wrong'
   });
 });
 
-// 🔹 MongoDB init and server listen
 mongodb.initDb((err) => {
-  if (err) {
-    console.log(err);
-  } else {
-    app.listen(port, () => {
-      console.log(`EduSync API server listening at http://localhost:${port}`);
-    });
-  }
+    if (err) {
+        console.log(err);
+    } else {
+        app.listen(port, () => {
+            console.log(`Database is listening and node server is running on port ${port}`);
+        });
+    }
 });
