@@ -107,3 +107,59 @@ DELETE http://localhost:3000/courses/688e4c9ddf18657252871311
 Content-Type: application/json
 
 ###
+
+
+
+### ========================================
+### ENROLLMENTS ENDPOINTS
+### ========================================
+
+# Get all enrollments
+GET http://localhost:3000/enrollments
+Content-Type: application/json
+
+###
+
+# Get a single enrollment by ID
+GET http://localhost:3000/enrollments/688e5f3adf18657252871312
+Content-Type: application/json
+
+###
+
+# Create a new enrollment
+POST http://localhost:3000/enrollments
+Content-Type: application/json
+
+{
+    "studentId": "68864bed3c73f6fdc2cf8728",
+    "courseId": "688649383c73f6fdc2cf8723",
+    "enrollmentDate": "2025-08-12T00:00:00.000+00:00",
+    "status": "Active",
+    "finalGrade": null,
+    "semester": "Fall 2025",
+    "creditsEarned": 0
+}
+
+###
+
+# Update an enrollment by ID
+PUT http://localhost:3000/enrollments/688e5f3adf18657252871312
+Content-Type: application/json
+
+{
+    "studentId": "68864bed3c73f6fdc2cf8728",
+    "courseId": "688649383c73f6fdc2cf8723",
+    "enrollmentDate": "2025-08-12T00:00:00.000+00:00",
+    "status": "Completed",
+    "finalGrade": "A",
+    "semester": "Fall 2025",
+    "creditsEarned": 3
+}
+
+###
+
+# Delete an enrollment by ID
+DELETE http://localhost:3000/enrollments/688e5f3adf18657252871312
+Content-Type: application/json
+
+###
