@@ -23,24 +23,33 @@
         "tags": [
           "Users"
         ],
-        "description": "",
+        "description": "Register a new user account",
         "parameters": [
           {
             "name": "body",
             "in": "body",
+            "required": true,
             "schema": {
               "type": "object",
               "properties": {
                 "username": {
+                  "type": "string",
                   "example": "any"
                 },
                 "email": {
+                  "type": "string",
                   "example": "any"
                 },
                 "password": {
+                  "type": "string",
                   "example": "any"
                 }
-              }
+              },
+              "required": [
+                "username",
+                "email",
+                "password"
+              ]
             }
           }
         ],
@@ -62,21 +71,28 @@
         "tags": [
           "Users"
         ],
-        "description": "",
+        "description": "Login with email and password",
         "parameters": [
           {
             "name": "body",
             "in": "body",
+            "required": true,
             "schema": {
               "type": "object",
               "properties": {
                 "email": {
+                  "type": "string",
                   "example": "any"
                 },
                 "password": {
+                  "type": "string",
                   "example": "any"
                 }
-              }
+              },
+              "required": [
+                "email",
+                "password"
+              ]
             }
           }
         ],
@@ -98,10 +114,10 @@
         "tags": [
           "Users"
         ],
-        "description": "",
+        "description": "Logout the current user",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Logged out successfully"
           },
           "500": {
             "description": "Internal Server Error"
@@ -114,7 +130,7 @@
         "tags": [
           "Users"
         ],
-        "description": "",
+        "description": "Access a protected route",
         "responses": {
           "200": {
             "description": "OK"

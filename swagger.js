@@ -1,10 +1,21 @@
 const swaggerAutogen = require('swagger-autogen')();
 
-// Determine the host based on environment
-const isProduction = process.env.NODE_ENV === 'production';
-const host = isProduction 
-  ? process.env.RENDER_EXTERNAL_HOSTNAME || 'edusync-api-7p52.onrender.com'
-  : `localhost:${process.env.PORT || 3000}`;
+// Detect environment: Render or local
+const isRender = !!process.env.RENDER; // Render sets this automatically
+const renderUrl = process.env.RENDER_EXTERNAL_URL || 'https://edusync-api-7p52.onrender.com';
+
+let host, schemes;
+
+if (isRender) {
+  // Use Render URL when deployed
+  const { hostname, protocol } = new URL(renderUrl);
+  host = hostname;              // edusync-api-7p52.onrender.com
+  schemes = [protocol.replace(':', '')]; // ['https']
+} else {
+  // Local development
+  host = `localhost:${process.env.PORT || 3000}`;
+  schemes = ['http'];
+}
 
 const doc = {
   info: {
@@ -12,13 +23,13 @@ const doc = {
     description: "API for managing a school's student information system. It allows authenticated staff to manage student records, courses, and enrollments.",
     version: '1.0.0'
   },
-  host: host,
-  schemes: isProduction ? ['https'] : ['http'],
+  host,
+  schemes,
   securityDefinitions: {
     api_key: {
-        type: 'apiKey',
-        name: 'api_key',
-        in: 'header'
+      type: 'apiKey',
+      name: 'api_key',
+      in: 'header'
     }
   }
 };
