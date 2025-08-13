@@ -2,7 +2,7 @@ const swaggerAutogen = require('swagger-autogen')();
 
 // Detect environment: Render or local
 const isRender = !!process.env.RENDER; // Render sets this automatically
-const renderUrl = process.env.RENDER_EXTERNAL_URL || 'https://edusync-api-7p52.onrender.com';
+const renderUrl = process.env.RENDER_EXTERNAL_URL || 'https://edusync-api-hsrd.onrender.com';
 
 let host, schemes;
 
